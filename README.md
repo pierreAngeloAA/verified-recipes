@@ -26,33 +26,28 @@ It does not replace official documentation, and it knows nothing about your proj
 
 ## Connect an agent
 
-The MCP server runs on your machine and has two read-only tools: `search_recipes` and `get_recipe`. To run it from a clone:
+The MCP server runs on your machine and has two read-only tools: `search_recipes` and `get_recipe`.
 
-```bash
-git clone https://github.com/pierreAngeloAA/verified-recipes.git
-cd verified-recipes
-npm install
-npm run build
-```
-
-Then add it to your client's MCP configuration, using the absolute path to your clone:
+**1. Add the server** to your client's MCP configuration. Requires Node.js 20 or later:
 
 ```json
 {
   "mcpServers": {
     "verified-recipes": {
-      "command": "node",
-      "args": ["/absolute/path/to/verified-recipes/mcp/server.mjs"]
+      "command": "npx",
+      "args": ["-y", "verified-recipes"]
     }
   }
 }
 ```
 
-To add a short instruction to your project's `AGENTS.md` or `CLAUDE.md`, so agents know when to use the tools, run this from your project. It shows the change and asks first:
+**2. Add the instruction** to your project. In [our tests](eval/README.md), agents rarely used the tools without it. This command adds a short block to `AGENTS.md` or `CLAUDE.md`, and it shows the change and asks first:
 
 ```bash
-node /absolute/path/to/verified-recipes/mcp/cli.mjs init
+npx verified-recipes init
 ```
+
+Use `--file CLAUDE.md` to choose the file. If your tool reads only one of them, make sure the block is there.
 
 The server answers from its bundled recipes and updates them from the published index in the background. Set `VERIFIED_RECIPES_INDEX_URL=off` to stay offline.
 
