@@ -24,6 +24,32 @@ The verification script checks both sides: the correct form must work **and** th
 
 It does not replace official documentation, and it knows nothing about your project. It only covers specific, testable traps.
 
+## Connect an agent
+
+The MCP server runs on your machine and has two read-only tools: `search_recipes` and `get_recipe`. To run it from a clone:
+
+```bash
+git clone https://github.com/pierreAngeloAA/verified-recipes.git
+cd verified-recipes
+npm install
+npm run build
+```
+
+Then add it to your client's MCP configuration, using the absolute path to your clone:
+
+```json
+{
+  "mcpServers": {
+    "verified-recipes": {
+      "command": "node",
+      "args": ["/absolute/path/to/verified-recipes/mcp/server.mjs"]
+    }
+  }
+}
+```
+
+The server looks for the newest published index and falls back to its bundled copy. Set `VERIFIED_RECIPES_INDEX_URL=off` to stay offline.
+
 ## Status
 
 Early stage. The recipe format and tooling are still changing.
