@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderRecipe, verificationState } from '../mcp/search.mjs';
 import { loadRecipes, parseRecipe, validateRecipe } from './lib/recipes.mjs';
+import { indexPage, recipePage, sitemap } from './lib/site.mjs';
 
 const SITE_URL = 'https://pierreangeloaa.github.io/verified-recipes';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -33,6 +34,7 @@ writeFileSync(join(site, 'index.json'), `${JSON.stringify({ schema: 1, recipes }
 
 for (const recipe of recipes) {
   writeFileSync(join(site, 'recipes', `${recipe.id}.md`), `${renderRecipe(recipe)}\n`);
+  writeFileSync(join(site, 'recipes', `${recipe.id}.html`), recipePage(recipe, SITE_URL));
 }
 
 const stacks = [...new Set(recipes.map((recipe) => recipe.stack))];
@@ -55,5 +57,7 @@ The full data, including exact error messages for searching, is at ${SITE_URL}/i
 ${sections.join('\n\n')}
 `;
 writeFileSync(join(site, 'llms.txt'), llms);
+writeFileSync(join(site, 'index.html'), indexPage(recipes, SITE_URL));
+writeFileSync(join(site, 'sitemap.xml'), sitemap(recipes, SITE_URL));
 
 console.log(`Built site/ with ${recipes.length} recipes`);
