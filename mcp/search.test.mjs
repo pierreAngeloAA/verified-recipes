@@ -80,6 +80,16 @@ test('common words alone do not match', () => {
   assert.deepEqual(ids({ query: 'how to use the' }), []);
 });
 
+test('an exact error returns only its recipe', () => {
+  assert.deepEqual(ids({ query: 'render is not a function' }), ['react-create-root']);
+});
+
+test('shared common words do not add unrelated recipes', () => {
+  assert.deepEqual(ids({ query: 'wrong number of arguments (given 0, expected 1..2) is not a function' }), [
+    'rails-enum-positional-syntax',
+  ]);
+});
+
 test('reports each verification state', () => {
   assert.equal(verificationState(passing, NOW).state, 'verified');
   assert.equal(verificationState({ ...passing, checked_at: '2026-10-01' }, NOW).state, 'stale');

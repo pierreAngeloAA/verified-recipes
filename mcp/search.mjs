@@ -3,10 +3,12 @@ const MAX_RESULTS = 5;
 
 const WEIGHTS = { error: 8, tag: 4, title: 3, id: 3, body: 1 };
 const FULL_ERROR_BONUS = 50;
+// Weak matches on shared words are noise next to a strong result.
+const MIN_RELATIVE_SCORE = 0.3;
 
 const STOP_WORDS = new Set([
   'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'do', 'for', 'from', 'how', 'i', 'in', 'is', 'it',
-  'of', 'on', 'or', 'the', 'to', 'use', 'using', 'what', 'when', 'why', 'with', 'my',
+  'my', 'no', 'not', 'of', 'on', 'or', 'the', 'this', 'to', 'use', 'using', 'what', 'when', 'why', 'with',
 ]);
 
 // Ruby changed its message quoting from `name' to 'name', so quotes must not
@@ -63,11 +65,13 @@ export function searchRecipes(recipes, { query, stack }, now = new Date()) {
   const normalizedQuery = normalize(query);
 
   const candidates = recipes.filter((recipe) => !wantedStack || recipe.stack === wantedStack);
-  return candidates
-    .map((recipe) => ({ recipe, score: scoreRecipe(recipe, terms, normalizedQuery) }))
+  const scored = candidates.map((recipe) => ({ recipe, score: scoreRecipe(recipe, terms, normalizedQuery) }));
+  const threshold = Math.max(...scored.map(({ score }) => score), 0) * MIN_RELATIVE_SCORE;
+
+  return scored
     // A bare stack name lists that stack, but it is not evidence of relevance
     // when the query also names a topic.
-    .filter(({ score }) => score > 0 || (terms.length === 0 && wantedStack))
+    .filter(({ score }) => (score > 0 && score >= threshold) || (terms.length === 0 && wantedStack))
     .sort((a, b) => b.score - a.score || a.recipe.id.localeCompare(b.recipe.id))
     .slice(0, MAX_RESULTS)
     .map(({ recipe }) => ({
