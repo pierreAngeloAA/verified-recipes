@@ -60,7 +60,7 @@ The server answers from its bundled recipes and updates them from the published 
 
 Early stage. The recipe format and tooling are still changing.
 
-**The evidence so far is weak:** on older Rails changes, a model passed 15/15 tasks both with and without the recipes. On more recent Spring Boot changes, it passed 13/15 without them and 15/15 with them, which is too small a sample to prove a gain. With the server connected and no instruction to use it, the model used the recipes in only 3 of 30 runs. See [the evaluation](eval/README.md) for the data and limits.
+**The evidence so far is weak:** on older Rails changes, a model passed 15/15 tasks both with and without the recipes. On more recent Spring Boot changes, it passed 13/15 without them and 15/15 with them, which is too small a sample to prove a gain. With the server connected and no instruction to use it, the model used the recipes in 3 of 30 runs and passed 27. With the instruction from `init` added to the project, it used them in 30 of 30 runs and passed all 30. Every test task is covered by a recipe, so expect lower results on real work. See [the evaluation](eval/README.md) for the data and limits.
 
 ## Usage history
 

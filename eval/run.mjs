@@ -7,6 +7,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
+import { addBlock } from '../mcp/init.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
@@ -20,6 +21,7 @@ const { values: options } = parseArgs({
     'max-budget': { type: 'string', default: '0.25' },
     filter: { type: 'string', default: '' },
     unprompted: { type: 'boolean', default: false },
+    instructed: { type: 'boolean', default: false },
     'max-total': { type: 'string', default: '0.20' },
   },
 });
@@ -99,6 +101,8 @@ function runAgent({ task, mode, model, maxBudget }) {
     args.push('--mcp-config', configPath);
     // Unprompted runs only connect the tools, to show whether agents choose to use them.
     if (mode === 'with') args.push('--append-system-prompt', WITH_RECIPES_PROMPT);
+    // Instructed runs have the same project instruction that `init` adds.
+    if (mode === 'instructed') writeFileSync(join(dir, 'CLAUDE.md'), addBlock(''));
     allowed.push('mcp__verified-recipes__search_recipes', 'mcp__verified-recipes__get_recipe');
   }
   args.push('--allowedTools', allowed.join(','));
@@ -205,7 +209,7 @@ function summarizeUnprompted(results) {
   const skipped = results.filter((r) => !r.used_recipes);
   const passed = (runs) => `${runs.filter((r) => r.passed).length}/${runs.length}`;
   return [
-    '| Task | Used the recipes without being told | Passed |',
+    '| Task | Used the recipes | Passed |',
     '|---|---|---|',
     ...rows,
     `| **Total** | **${consulted.length}/${results.length}** | **${passed(results)}** |`,
@@ -222,7 +226,7 @@ async function main() {
   const jobs = [];
   for (const task of tasks) {
     for (let run = 0; run < Number(values.runs); run += 1) {
-      for (const mode of values.unprompted ? ['unprompted'] : ['without', 'with']) {
+      for (const mode of values.instructed ? ['instructed'] : values.unprompted ? ['unprompted'] : ['without', 'with']) {
         jobs.push(() => runAgent({ task, mode, model: values.model, maxBudget: values['max-budget'] }));
       }
     }
@@ -232,9 +236,9 @@ async function main() {
   const resultsDir = join(here, 'results');
   mkdirSync(resultsDir, { recursive: true });
   const stamp = new Date().toISOString().slice(0, 10);
-  const name = [stamp, values.model, values.filter.replace(/-$/, ''), values.unprompted && 'unprompted'].filter(Boolean).join('-');
+  const name = [stamp, values.model, values.filter.replace(/-$/, ''), values.unprompted && 'unprompted', values.instructed && 'instructed'].filter(Boolean).join('-');
   writeFileSync(join(resultsDir, `${name}.json`), `${JSON.stringify(results, null, 2)}\n`);
-  const table = values.unprompted ? summarizeUnprompted(results) : summarize(results);
+  const table = values.unprompted || values.instructed ? summarizeUnprompted(results) : summarize(results);
   writeFileSync(join(resultsDir, `${name}.md`), `# Evaluation ${name}\n\n${table}\n`);
   console.log(`\n${table}`);
 }

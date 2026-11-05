@@ -55,7 +55,21 @@ Same 10 tasks, 3 runs each, with the MCP server connected and no instruction to 
 | Passed when they were not used | 24/27 |
 | Total cost reported | $0.051 |
 
-**Connecting the server is not enough.** All three failures imported a Spring Boot class from its old package, a mistake covered by a recipe, and none of those runs searched the recipes. This does not test the instruction added by `init`, and agents could not see a compile error, which is one of the moments the tool description targets.
+**Connecting the server is not enough.** All three failures imported a Spring Boot class from its old package, a mistake covered by a recipe, and none of those runs searched the recipes. Agents could not see a compile error, which is one of the moments the tool description targets.
+
+## With the `init` instruction, 2026-11-05
+
+Same 10 tasks and 3 runs each, with the block from `init` in the project's `CLAUDE.md`:
+
+| Measure | Server only | Server and instruction |
+|---|---|---|
+| Runs that used the recipes | 3/30 | 30/30 |
+| Tasks passed | 27/30 | 30/30 |
+| Average time per run | 7.9 s | 9.6 s |
+| Average tool calls | 1.4 | 3.4 |
+| Total cost reported | $0.051 | $0.062 |
+
+**The instruction is what makes agents use the recipes.** It also makes them search on tasks where the model already knew the answer, which adds time and cost. The sample is small, and every task here is covered by a recipe, so results will be lower on real work.
 
 ## Limits
 
