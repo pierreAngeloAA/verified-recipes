@@ -1,0 +1,18 @@
+{
+  "name": "verified-recipes",
+  "version": "0.1.0",
+  "description": "Verified, CI-tested coding recipes for AI agents",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pierreAngeloAA/verified-recipes.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "validate": "node tools/validate.mjs",
+    "test": "node --test \"tools/**/*.test.mjs\""
+  }
+}
