@@ -39,7 +39,7 @@ server.registerTool(
   {
     title: 'Search verified recipes',
     description:
-      'Find fixes for framework mistakes, checked by running code. Pass a topic or an error message. A clear match includes the fix.',
+      `Check before using an API that may have changed in a recent release, or after a framework error. Covers ${[...new Set(bundled.map((recipe) => recipe.stack))].join(', ')}. Pass a topic or the exact error. A clear match includes a fix verified by running code.`,
     inputSchema: {
       query: z.string().min(1).max(4000).describe('Topic or error message'),
       stack: z.string().max(40).optional().describe('For example: rails'),

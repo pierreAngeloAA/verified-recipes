@@ -26,9 +26,11 @@
     "zod": "^4.6.7"
   },
   "bin": {
-    "verified-recipes": "mcp/server.mjs"
+    "verified-recipes": "mcp/cli.mjs"
   },
   "files": [
+    "mcp/cli.mjs",
+    "mcp/init.mjs",
     "mcp/server.mjs",
     "mcp/search.mjs",
     "site/index.json"
