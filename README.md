@@ -56,6 +56,10 @@ Early stage. The recipe format and tooling are still changing.
 
 **The first evaluation found no gain in correctness:** a model passed 15/15 tasks both with and without the recipes, because it already knew these changes. See [the evaluation](eval/README.md) for the data and limits.
 
+## Usage history
+
+A weekly workflow saves npm downloads, Git clones, repository views, stars and forks to the [`metrics` branch](https://github.com/pierreAngeloAA/verified-recipes/tree/metrics). These numbers show interest, not how often agents use the recipes. The MCP server sends no usage data.
+
 ## License
 
 [MIT](LICENSE)

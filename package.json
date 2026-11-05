@@ -18,7 +18,8 @@
     "build": "node tools/build.mjs",
     "prepack": "npm run build",
     "smoke": "node tools/mcp-smoke.mjs",
-    "eval": "node eval/run.mjs"
+    "eval": "node eval/run.mjs",
+    "metrics": "node tools/metrics.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",

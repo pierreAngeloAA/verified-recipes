@@ -15,7 +15,7 @@ AI agents read these recipes and may act on them, so recipe text is an attack su
 Verification scripts are code that runs in CI, so review them as carefully as any other code.
 
 - Pull request runs have read-only repository permissions and receive no secrets.
-- Only the scheduled workflow on the default branch may write verification results.
+- Only the workflows on the default branch may write verification results, and pull requests cannot trigger the workflow that saves usage history.
 
 ## Rules for agents and clients
 
