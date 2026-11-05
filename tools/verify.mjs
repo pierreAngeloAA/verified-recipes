@@ -21,6 +21,17 @@ const STACKS = {
     setup: ['bundle', ['update', '--quiet']],
     command: (file) => ['bundle', ['exec', 'ruby', file]],
   },
+  react: {
+    env: {},
+    // No lockfile, so each run gets the newest release.
+    setup: ['npm', ['install', '--no-package-lock', '--no-audit', '--no-fund', '--silent'], join(root, 'recipes/react')],
+    command: (file) => [process.execPath, [file]],
+  },
+  swift: {
+    env: {},
+    setup: ['docker', ['pull', '--quiet', 'swift:latest']],
+    command: (file) => ['bash', [file]],
+  },
 };
 
 function run(command, args, env, cwd = root) {
@@ -47,8 +58,8 @@ function verifyAll({ stack, id } = {}) {
   for (const stackName of new Set(selected.map((recipe) => recipe.stack))) {
     const config = STACKS[stackName];
     if (!config?.setup) continue;
-    const [command, args] = config.setup;
-    const result = run(command, args, config.env);
+    const [command, args, cwd] = config.setup;
+    const result = run(command, args, config.env, cwd);
     if (result.status !== 0) failedSetups.set(stackName, `${result.stdout}${result.stderr}`);
   }
 

@@ -43,5 +43,33 @@
       "rails": "8.1.4.1",
       "ruby": "3.3.5"
     }
+  },
+  "react-create-root": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "react": "19.3.1",
+      "react-dom": "19.3.1",
+      "node": "22.23.1"
+    }
+  },
+  "react-string-refs": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "react": "19.3.1",
+      "react-dom": "19.3.1",
+      "node": "22.23.1"
+    }
+  },
+  "swift-global-mutable-state": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "swift": "6.4.2"
+    }
   }
 }

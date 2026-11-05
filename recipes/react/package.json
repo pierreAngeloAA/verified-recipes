@@ -1,0 +1,11 @@
+{
+  "name": "verified-recipes-react-verification",
+  "private": true,
+  "type": "module",
+  "description": "Unpinned with no lockfile, so verification runs against the newest release.",
+  "dependencies": {
+    "jsdom": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  }
+}
