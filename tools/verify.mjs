@@ -1,0 +1,91 @@
+import { spawnSync } from 'node:child_process';
+import { dirname, join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { parseArgs } from 'node:util';
+import { loadRecipes, VERIFY_FILES } from './lib/recipes.mjs';
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const cache = join(root, '.cache');
+
+const RAILS_ENV = {
+  BUNDLE_GEMFILE: join(root, 'recipes/rails/Gemfile'),
+  BUNDLE_PATH: join(cache, 'bundle'),
+};
+
+const STACKS = {
+  rails: {
+    env: RAILS_ENV,
+    // `update` ignores any existing lockfile, so each run gets the newest release.
+    setup: ['bundle', ['update', '--quiet']],
+    command: (file) => ['bundle', ['exec', 'ruby', file]],
+  },
+};
+
+function run(command, args, env, cwd = root) {
+  return spawnSync(command, args, {
+    cwd,
+    env: { ...process.env, ...env },
+    encoding: 'utf8',
+    maxBuffer: 64 * 1024 * 1024,
+  });
+}
+
+function parseVersions(output) {
+  const line = output.match(/^VERSIONS (\{.*\})$/m);
+  return line ? JSON.parse(line[1]) : null;
+}
+
+export function verifyAll({ stack, id } = {}) {
+  const selected = loadRecipes(root).filter(
+    (recipe) => (!stack || recipe.stack === stack) && (!id || recipe.folderName === id),
+  );
+  const results = [];
+  const failedSetups = new Map();
+
+  for (const stackName of new Set(selected.map((recipe) => recipe.stack))) {
+    const config = STACKS[stackName];
+    if (!config?.setup) continue;
+    const [command, args] = config.setup;
+    const result = run(command, args, config.env);
+    if (result.status !== 0) failedSetups.set(stackName, `${result.stdout}${result.stderr}`);
+  }
+
+  for (const recipe of selected) {
+    const config = STACKS[recipe.stack];
+    const name = recipe.folderName;
+    if (!config) {
+      results.push({ id: name, passed: false, versions: null, output: `no runner for stack "${recipe.stack}"` });
+      continue;
+    }
+    if (failedSetups.has(recipe.stack)) {
+      results.push({ id: name, passed: false, versions: null, output: failedSetups.get(recipe.stack) });
+      continue;
+    }
+
+    const file = join(recipe.dir, VERIFY_FILES[recipe.stack]);
+    const [command, args] = config.command(file, recipe);
+    const result = run(command, args, config.env);
+    const output = `${result.stdout ?? ''}${result.stderr ?? ''}${result.error?.message ?? ''}`;
+    const versions = parseVersions(output);
+    // A pass without reported versions would produce an unverifiable claim.
+    results.push({ id: name, passed: result.status === 0 && versions !== null, versions, output });
+  }
+  return results;
+}
+
+function main() {
+  const { values } = parseArgs({ options: { stack: { type: 'string' }, id: { type: 'string' } } });
+  const results = verifyAll(values);
+
+  for (const result of results) {
+    const versions = result.versions ? JSON.stringify(result.versions) : '';
+    console.log(`${result.passed ? 'PASS' : 'FAIL'} ${result.id} ${versions}`);
+    if (!result.passed) console.log(result.output);
+  }
+
+  const passed = results.filter((result) => result.passed).length;
+  console.log(`${passed}/${results.length} recipes verified from ${relative(process.cwd(), root) || '.'}`);
+  process.exit(results.length > 0 && passed === results.length ? 0 : 1);
+}
+
+main();

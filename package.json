@@ -13,6 +13,7 @@
   },
   "scripts": {
     "validate": "node tools/validate.mjs",
-    "test": "node --test \"tools/**/*.test.mjs\""
+    "test": "node --test \"tools/**/*.test.mjs\"",
+    "verify": "node tools/verify.mjs"
   }
 }
