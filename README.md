@@ -48,13 +48,13 @@ Then add it to your client's MCP configuration, using the absolute path to your 
 }
 ```
 
-The server looks for the newest published index and falls back to its bundled copy. Set `VERIFIED_RECIPES_INDEX_URL=off` to stay offline.
+The server answers from its bundled recipes and updates them from the published index in the background. Set `VERIFIED_RECIPES_INDEX_URL=off` to stay offline.
 
 ## Status
 
 Early stage. The recipe format and tooling are still changing.
 
-**The first evaluation found no gain in correctness:** a model passed 15/15 tasks both with and without the recipes, because it already knew these changes. See [the evaluation](eval/README.md) for the data and limits.
+**The evidence so far is weak:** on older Rails changes, a model passed 15/15 tasks both with and without the recipes. On more recent Spring Boot changes, it passed 13/15 without them and 15/15 with them, which is too small a sample to prove a gain. See [the evaluation](eval/README.md) for the data and limits.
 
 ## Usage history
 

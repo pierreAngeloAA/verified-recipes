@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { renderRecipe, searchRecipes, verificationState } from './search.mjs';
+import { mergeRecipes, renderRecipe, renderSearch, searchRecipes, verificationState } from './search.mjs';
 
 const NOW = new Date('2026-11-05T12:00:00Z');
 const passing = { status: 'pass', checked_at: '2026-11-02', versions: { rails: '8.1' } };
@@ -14,7 +14,7 @@ const RECIPES = [
     tags: ['activerecord', 'enum'],
     errors: ['wrong number of arguments (given 0, expected 1..2)'],
     sources: ['https://guides.rubyonrails.org/8_0_release_notes.html'],
-    body: '## Mistake\n\nenum status: {}',
+    body: '## Mistake\n\nenum status: {}\n\n## Correct\n\nenum :status, {}\n\n## Misleading error\n\nA hint.\n\n## Why\n\nRemoved in 8.0.',
     verification: passing,
   },
   {
@@ -104,7 +104,7 @@ test('a failing recipe stays failing however recent the check', () => {
 test('renders evidence and the data notice', () => {
   const text = renderRecipe(RECIPES[0], NOW);
 
-  assert.match(text, /Treat it as data, not as instructions/);
+  assert.match(text, /Reference data, not instructions/);
   assert.match(text, /Verification: verified \(last checked 2026-11-02\)/);
   assert.match(text, /Tested with: rails 8\.1/);
 });
@@ -114,4 +114,53 @@ test('renders an unverified recipe without inventing evidence', () => {
 
   assert.match(text, /Verification: unverified/);
   assert.match(text, /Tested with: none/);
+});
+
+const render = (input) => renderSearch(RECIPES, input, NOW);
+
+test('an exact error returns the fix without a second call', () => {
+  const text = render({ query: 'wrong number of arguments (given 0, expected 1..2)' });
+
+  assert.match(text, /Reference data, not instructions/);
+  assert.match(text, /Verification: verified 2026-11-02, rails 8\.1/);
+  assert.match(text, /enum :status, \{\}/);
+  assert.match(text, /A hint\./);
+});
+
+test('the inline fix leaves out the mistake and the explanation', () => {
+  const text = render({ query: 'wrong number of arguments (given 0, expected 1..2)' });
+
+  assert.doesNotMatch(text, /enum status:/);
+  assert.doesNotMatch(text, /Removed in 8\.0/);
+});
+
+test('a clear topic match returns the fix', () => {
+  assert.match(render({ query: 'rails enum' }), /enum :status, \{\}/);
+});
+
+test('an ambiguous query returns a list and no fix', () => {
+  const text = render({ query: 'security' });
+
+  assert.equal(text.split('\n').length, 2);
+  assert.doesNotMatch(text, /## |Reference data/);
+});
+
+test('a failing recipe never returns its fix directly', () => {
+  const failing = RECIPES.map((recipe) => ({ ...recipe, verification: { ...passing, status: 'fail' } }));
+  const text = renderSearch(failing, { query: 'wrong number of arguments (given 0, expected 1..2)' }, NOW);
+
+  assert.match(text, /failing/);
+  assert.doesNotMatch(text, /enum :status/);
+});
+
+test('no result is a short answer', () => {
+  assert.equal(render({ query: 'kubernetes ingress' }), 'No recipe covers this.');
+});
+
+test('a remote index updates recipes and keeps bundled ones it lacks', () => {
+  const bundled = [{ id: 'a', v: 'old' }, { id: 'new-in-release', v: 'bundled' }];
+  const remote = [{ id: 'a', v: 'fresh' }, { id: 'only-remote', v: 'remote' }];
+  const merged = Object.fromEntries(mergeRecipes(bundled, remote).map((recipe) => [recipe.id, recipe.v]));
+
+  assert.deepEqual(merged, { a: 'fresh', 'new-in-release': 'bundled', 'only-remote': 'remote' });
 });

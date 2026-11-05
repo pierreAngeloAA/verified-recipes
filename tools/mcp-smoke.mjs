@@ -19,18 +19,19 @@ const call = async (name, args) => {
 const { tools } = await client.listTools();
 assert.deepEqual(tools.map((tool) => tool.name).sort(), ['get_recipe', 'search_recipes']);
 
-const byError = JSON.parse((await call('search_recipes', {
+const byError = await call('search_recipes', {
   query: 'wrong number of arguments (given 0, expected 1..2) (ArgumentError)',
-})).text);
-assert.equal(byError[0].id, 'rails-enum-positional-syntax');
-assert.equal(byError[0].state, 'verified');
+});
+assert.match(byError.text, /rails-enum-positional-syntax/);
+assert.match(byError.text, /Verification: verified/);
+assert.match(byError.text, /enum :status/);
 
-const recipe = await call('get_recipe', { id: byError[0].id });
+const recipe = await call('get_recipe', { id: 'rails-enum-positional-syntax' });
 assert.equal(recipe.isError, false);
-assert.match(recipe.text, /enum :status/);
+assert.match(recipe.text, /enum status:/);
 assert.match(recipe.text, /Tested with: rails /);
 
-assert.deepEqual(JSON.parse((await call('search_recipes', { query: 'kubernetes ingress' })).text), []);
+assert.equal((await call('search_recipes', { query: 'kubernetes ingress' })).text, 'No recipe covers this.');
 assert.equal((await call('get_recipe', { id: 'does-not-exist' })).isError, true);
 
 await client.close();
