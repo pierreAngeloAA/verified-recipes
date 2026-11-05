@@ -1,0 +1,7 @@
+# Deliberately unpinned below the major version, with no lockfile, so
+# verification always runs against the newest release.
+source "https://rubygems.org"
+
+gem "rails", ">= 8.0"
+gem "sqlite3", ">= 2.1"
+gem "minitest", ">= 5.25"
