@@ -1,0 +1,4 @@
+Write a file named Exporter.java in the current directory, targeting the latest stable Spring Boot.
+It is a class in package verify, a @Component named Exporter. Its constructor receives the Jackson mapper that Spring Boot auto-configures, and it has a method String export(Object value) that returns the value as a JSON string.
+Only the Jackson version that Spring Boot manages by default is on the classpath.
+Write only Exporter.java.

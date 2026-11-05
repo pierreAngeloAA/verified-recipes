@@ -1,0 +1,4 @@
+Write a file named HelloControllerTest.java in the current directory, targeting the latest stable Spring Boot.
+It is a JUnit test in package verify. The same package already has a @SpringBootConfiguration class named HelloApp and a @RestController named HelloController, which returns "hi" for GET /hello.
+Write a test class HelloControllerTest that uses Spring Boot's Spring MVC test slice for HelloController, and uses MockMvc to assert that GET /hello returns status 200 and the body "hi". The test starter for Spring MVC is already on the classpath.
+Write only HelloControllerTest.java.

@@ -1,0 +1,4 @@
+Write a file named ClientFactory.java in the current directory, targeting the latest stable Spring Boot.
+It is a class in package verify, a @Component named ClientFactory. Its constructor receives Spring Boot's auto-configured RestTemplateBuilder, and it has a method RestTemplate create() that builds a RestTemplate from it.
+The Spring Boot starter needed for this is already on the classpath.
+Write only ClientFactory.java.

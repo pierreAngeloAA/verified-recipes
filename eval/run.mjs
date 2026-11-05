@@ -11,7 +11,17 @@ import { parseArgs } from 'node:util';
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
 const tasksDir = join(here, 'tasks');
-const tasks = readdirSync(tasksDir).sort();
+const { values: options } = parseArgs({
+  options: {
+    'self-check': { type: 'boolean', default: false },
+    model: { type: 'string', default: 'haiku' },
+    runs: { type: 'string', default: '3' },
+    concurrency: { type: 'string', default: '4' },
+    'max-budget': { type: 'string', default: '0.25' },
+    filter: { type: 'string', default: '' },
+  },
+});
+const tasks = readdirSync(tasksDir).filter((task) => task.startsWith(options.filter)).sort();
 
 const CHECK_ENV = {
   ...process.env,
@@ -22,20 +32,36 @@ const CHECK_ENV = {
 const WITH_RECIPES_PROMPT =
   'A verified-recipes MCP server is available. Search it before writing framework code.';
 
+function taskMeta(task) {
+  const path = join(tasksDir, task, 'meta.json');
+  return existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : { solution: 'solution.rb', profile: '' };
+}
+
 function runCheck(task, solutionPath) {
-  const result = spawnSync('bundle', ['exec', 'ruby', join(tasksDir, task, 'check.rb')], {
+  const meta = taskMeta(task);
+  const isRails = meta.solution.endsWith('.rb');
+  const [command, args] = isRails
+    ? ['bundle', ['exec', 'ruby', join(tasksDir, task, 'check.rb')]]
+    : ['bash', [join(here, 'spring-check.sh'), join(tasksDir, task), solutionPath, meta.solution, meta.profile]];
+  const result = spawnSync(command, args, {
     env: { ...CHECK_ENV, SOLUTION: solutionPath },
     encoding: 'utf8',
-    timeout: 60_000,
+    timeout: 180_000,
+    maxBuffer: 64 * 1024 * 1024,
   });
   return { passed: result.status === 0, output: `${result.stdout}${result.stderr}` };
+}
+
+function fixture(task, name) {
+  const extension = taskMeta(task).solution.split('.').at(-1);
+  return join(tasksDir, task, `${name}.${extension}`);
 }
 
 function selfCheck() {
   let ok = true;
   for (const task of tasks) {
-    const good = runCheck(task, join(tasksDir, task, 'good.rb')).passed;
-    const bad = runCheck(task, join(tasksDir, task, 'bad.rb')).passed;
+    const good = runCheck(task, fixture(task, 'good')).passed;
+    const bad = runCheck(task, fixture(task, 'bad')).passed;
     const valid = good && !bad;
     ok &&= valid;
     console.log(`${valid ? 'OK  ' : 'BAD '} ${task} (good passes: ${good}, mistake passes: ${bad})`);
@@ -89,9 +115,9 @@ function runAgent({ task, mode, model, maxBudget }) {
         .filter((block) => block.type === 'tool_use')
         .map((block) => block.name);
       const summary = events.find((event) => event.type === 'result');
-      const solutionPath = join(dir, 'solution.rb');
+      const solutionPath = join(dir, taskMeta(task).solution);
       const wrote = existsSync(solutionPath);
-      const check = wrote ? runCheck(task, solutionPath) : { passed: false, output: 'no solution.rb' };
+      const check = wrote ? runCheck(task, solutionPath) : { passed: false, output: 'no solution file' };
 
       resolve({
         task,
@@ -158,15 +184,7 @@ function summarize(results) {
 }
 
 async function main() {
-  const { values } = parseArgs({
-    options: {
-      'self-check': { type: 'boolean', default: false },
-      model: { type: 'string', default: 'haiku' },
-      runs: { type: 'string', default: '3' },
-      concurrency: { type: 'string', default: '4' },
-      'max-budget': { type: 'string', default: '0.25' },
-    },
-  });
+  const values = options;
   if (values['self-check']) selfCheck();
 
   const jobs = [];
@@ -182,7 +200,7 @@ async function main() {
   const resultsDir = join(here, 'results');
   mkdirSync(resultsDir, { recursive: true });
   const stamp = new Date().toISOString().slice(0, 10);
-  const name = `${stamp}-${values.model}`;
+  const name = [stamp, values.model, values.filter.replace(/-$/, '')].filter(Boolean).join('-');
   writeFileSync(join(resultsDir, `${name}.json`), `${JSON.stringify(results, null, 2)}\n`);
   const table = summarize(results);
   writeFileSync(join(resultsDir, `${name}.md`), `# Evaluation ${name}\n\n${table}\n`);

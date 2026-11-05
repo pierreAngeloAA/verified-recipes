@@ -1,0 +1,4 @@
+Write a file named GreeterTest.java in the current directory, targeting the latest stable Spring Boot.
+It is a JUnit test in package verify. The same package already has an interface Greeter with a method String greet(), and a configuration class GreeterApp that defines a real Greeter bean.
+Write a test class GreeterTest annotated with @SpringBootTest(classes = GreeterApp.class). In it, replace the Greeter bean in the Spring context with a Mockito mock, stub greet() to return "mock", and assert that a Greeter autowired from the context returns "mock".
+Write only GreeterTest.java.

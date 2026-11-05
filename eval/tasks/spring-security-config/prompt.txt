@@ -1,0 +1,4 @@
+Write a file named SecurityConfig.java in the current directory, targeting the latest stable Spring Boot.
+It is a class in package verify, a @Configuration class named SecurityConfig that defines a SecurityFilterChain bean from HttpSecurity.
+Disable CSRF protection. Allow anyone to reach /public. Require authentication for every other request, using HTTP Basic.
+Write only SecurityConfig.java.
