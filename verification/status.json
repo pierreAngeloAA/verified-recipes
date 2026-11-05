@@ -64,6 +64,51 @@
       "node": "22.23.1"
     }
   },
+  "spring-jackson3-packages": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "spring-boot": "4.1.2",
+      "java": "21.0.13"
+    }
+  },
+  "spring-mockito-bean": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "spring-boot": "4.1.2",
+      "java": "21.0.13"
+    }
+  },
+  "spring-rest-template-builder-package": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "spring-boot": "4.1.2",
+      "java": "21.0.13"
+    }
+  },
+  "spring-security-lambda-dsl": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "spring-boot": "4.1.2",
+      "java": "21.0.13"
+    }
+  },
+  "spring-webmvctest-package": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "spring-boot": "4.1.2",
+      "java": "21.0.13"
+    }
+  },
   "swift-global-mutable-state": {
     "status": "pass",
     "checked_at": "2026-11-05",

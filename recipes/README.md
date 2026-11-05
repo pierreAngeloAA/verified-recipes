@@ -21,6 +21,7 @@ The folder name must equal the recipe `id`, and the `id` must start with the sta
 |---|---|---|
 | `rails` | `verify.rb` | Ruby, with the latest Rails from `recipes/rails/Gemfile` |
 | `react` | `verify.mjs` | Node.js, with the latest React from `recipes/react/package.json` |
+| `spring` | `verify.sh`, with `correct/` and `mistake/` folders | The official Maven Docker image, with the latest Spring Boot |
 | `swift` | `verify.sh` | The official Swift Docker image |
 
 ## Fields

@@ -27,6 +27,11 @@ const STACKS = {
     setup: ['npm', ['install', '--no-package-lock', '--no-audit', '--no-fund', '--silent'], join(root, 'recipes/react')],
     command: (file) => [process.execPath, [file]],
   },
+  spring: {
+    env: {},
+    setup: ['docker', ['pull', '--quiet', 'maven:3-eclipse-temurin-21']],
+    command: (file) => ['bash', [file]],
+  },
   swift: {
     env: {},
     setup: ['docker', ['pull', '--quiet', 'swift:latest']],
