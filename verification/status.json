@@ -1,0 +1,47 @@
+{
+  "rails-deprecator-instance": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "rails": "8.1.4.1",
+      "ruby": "3.3.5"
+    }
+  },
+  "rails-enum-positional-syntax": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "rails": "8.1.4.1",
+      "ruby": "3.3.5"
+    }
+  },
+  "rails-params-expect": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "rails": "8.1.4.1",
+      "ruby": "3.3.5"
+    }
+  },
+  "rails-serialize-coder-keyword": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "rails": "8.1.4.1",
+      "ruby": "3.3.5"
+    }
+  },
+  "rails-to-fs-date-format": {
+    "status": "pass",
+    "checked_at": "2026-11-05",
+    "last_passed_at": "2026-11-05",
+    "versions": {
+      "rails": "8.1.4.1",
+      "ruby": "3.3.5"
+    }
+  }
+}

@@ -1,8 +1,10 @@
 import { spawnSync } from 'node:child_process';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { loadRecipes, VERIFY_FILES } from './lib/recipes.mjs';
+import { failureReport, updateStatus } from './lib/status.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const cache = join(root, '.cache');
@@ -35,7 +37,7 @@ function parseVersions(output) {
   return line ? JSON.parse(line[1]) : null;
 }
 
-export function verifyAll({ stack, id } = {}) {
+function verifyAll({ stack, id } = {}) {
   const selected = loadRecipes(root).filter(
     (recipe) => (!stack || recipe.stack === stack) && (!id || recipe.folderName === id),
   );
@@ -73,9 +75,29 @@ export function verifyAll({ stack, id } = {}) {
   return results;
 }
 
+function writeStatus(results, failuresFile) {
+  const date = new Date().toISOString().slice(0, 10);
+  const statusPath = join(root, 'verification/status.json');
+  const previous = existsSync(statusPath) ? JSON.parse(readFileSync(statusPath, 'utf8')) : {};
+
+  mkdirSync(dirname(statusPath), { recursive: true });
+  writeFileSync(statusPath, `${JSON.stringify(updateStatus(previous, results, date), null, 2)}\n`);
+
+  const report = failureReport(results, date);
+  if (failuresFile && report) writeFileSync(failuresFile, report);
+}
+
 function main() {
-  const { values } = parseArgs({ options: { stack: { type: 'string' }, id: { type: 'string' } } });
-  const results = verifyAll(values);
+  const { values } = parseArgs({
+    options: {
+      stack: { type: 'string' },
+      id: { type: 'string' },
+      write: { type: 'boolean', default: false },
+      'failures-file': { type: 'string' },
+    },
+  });
+  const results = verifyAll({ stack: values.stack, id: values.id });
+  if (values.write) writeStatus(results, values['failures-file']);
 
   for (const result of results) {
     const versions = result.versions ? JSON.stringify(result.versions) : '';
