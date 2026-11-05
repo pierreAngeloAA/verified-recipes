@@ -48,13 +48,19 @@ Then add it to your client's MCP configuration, using the absolute path to your 
 }
 ```
 
+To add a short instruction to your project's `AGENTS.md` or `CLAUDE.md`, so agents know when to use the tools, run this from your project. It shows the change and asks first:
+
+```bash
+node /absolute/path/to/verified-recipes/mcp/cli.mjs init
+```
+
 The server answers from its bundled recipes and updates them from the published index in the background. Set `VERIFIED_RECIPES_INDEX_URL=off` to stay offline.
 
 ## Status
 
 Early stage. The recipe format and tooling are still changing.
 
-**The evidence so far is weak:** on older Rails changes, a model passed 15/15 tasks both with and without the recipes. On more recent Spring Boot changes, it passed 13/15 without them and 15/15 with them, which is too small a sample to prove a gain. See [the evaluation](eval/README.md) for the data and limits.
+**The evidence so far is weak:** on older Rails changes, a model passed 15/15 tasks both with and without the recipes. On more recent Spring Boot changes, it passed 13/15 without them and 15/15 with them, which is too small a sample to prove a gain. With the server connected and no instruction to use it, the model used the recipes in only 3 of 30 runs. See [the evaluation](eval/README.md) for the data and limits.
 
 ## Usage history
 

@@ -42,9 +42,24 @@ Same design, with five tasks on more recent changes:
 
 **This is the first sign of a gain, but the sample is too small to prove one.** Both failures were in `spring-rest-client`, where the agent imported `RestTemplateBuilder` from its old package, the exact mistake in the recipe. The other four tasks passed in every run, so the model already knew most of these changes. The recipes also added about 5 seconds per task.
 
+## Do agents use the recipes unprompted? 2026-11-05
+
+Same 10 tasks, 3 runs each, with the MCP server connected and no instruction to use it:
+
+| Measure | Result |
+|---|---|
+| Runs that used the recipes | 3/30 |
+| Rails tasks that used the recipes | 0/15 |
+| Spring Boot tasks that used the recipes | 3/15 |
+| Passed when the recipes were used | 3/3 |
+| Passed when they were not used | 24/27 |
+| Total cost reported | $0.051 |
+
+**Connecting the server is not enough.** All three failures imported a Spring Boot class from its old package, a mistake covered by a recipe, and none of those runs searched the recipes. This does not test the instruction added by `init`, and agents could not see a compile error, which is one of the moments the tool description targets.
+
 ## Limits
 
 - Only one model, five tasks per stack and three runs per task, so these are small samples.
 - The prompts are specific, which may guide the model toward the right answer.
-- Agents were told to search the recipes, so this does not measure whether they would do it unprompted.
+- In the comparisons above, agents were told to search the recipes.
 - The agent could not run its code, so this does not measure recovery after an error.

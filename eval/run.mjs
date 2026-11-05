@@ -19,6 +19,8 @@ const { values: options } = parseArgs({
     concurrency: { type: 'string', default: '4' },
     'max-budget': { type: 'string', default: '0.25' },
     filter: { type: 'string', default: '' },
+    unprompted: { type: 'boolean', default: false },
+    'max-total': { type: 'string', default: '0.20' },
   },
 });
 const tasks = readdirSync(tasksDir).filter((task) => task.startsWith(options.filter)).sort();
@@ -83,7 +85,7 @@ function runAgent({ task, mode, model, maxBudget }) {
   ];
   const allowed = ['Write'];
 
-  if (mode === 'with') {
+  if (mode !== 'without') {
     const configPath = join(dir, 'mcp.json');
     writeFileSync(configPath, JSON.stringify({
       mcpServers: {
@@ -94,7 +96,9 @@ function runAgent({ task, mode, model, maxBudget }) {
         },
       },
     }));
-    args.push('--mcp-config', configPath, '--append-system-prompt', WITH_RECIPES_PROMPT);
+    args.push('--mcp-config', configPath);
+    // Unprompted runs only connect the tools, to show whether agents choose to use them.
+    if (mode === 'with') args.push('--append-system-prompt', WITH_RECIPES_PROMPT);
     allowed.push('mcp__verified-recipes__search_recipes', 'mcp__verified-recipes__get_recipe');
   }
   args.push('--allowedTools', allowed.join(','));
@@ -125,6 +129,7 @@ function runAgent({ task, mode, model, maxBudget }) {
         model,
         passed: check.passed,
         used_recipes: calls.some((name) => name.startsWith('mcp__verified-recipes__')),
+        using_overage: /"isUsingOverage"\s*:\s*true/.test(stdout),
         tool_calls: calls.length,
         cost_usd: summary?.total_cost_usd ?? null,
         duration_ms: summary?.duration_ms ?? null,
@@ -136,15 +141,23 @@ function runAgent({ task, mode, model, maxBudget }) {
   });
 }
 
-async function pool(jobs, size) {
+// Stops starting runs at the spending cap, or as soon as a run reports paid extra usage.
+async function pool(jobs, size, maxTotal) {
   const results = [];
   let next = 0;
+  let total = 0;
+  let stopped = false;
   await Promise.all(Array.from({ length: size }, async () => {
-    while (next < jobs.length) {
+    while (next < jobs.length && !stopped) {
       const job = jobs[next++];
       const result = await job();
       results.push(result);
-      console.log(`${result.passed ? 'PASS' : 'FAIL'} ${result.mode.padEnd(7)} ${result.task} recipes=${result.used_recipes} calls=${result.tool_calls}`);
+      total += result.cost_usd ?? 0;
+      if (result.using_overage || total >= maxTotal) {
+        stopped = true;
+        console.log(`STOPPED: ${result.using_overage ? 'paid extra usage detected' : `reached $${maxTotal}`}`);
+      }
+      console.log(`${result.passed ? 'PASS' : 'FAIL'} ${result.mode.padEnd(10)} ${result.task} recipes=${result.used_recipes} calls=${result.tool_calls}`);
     }
   }));
   return results;
@@ -183,6 +196,25 @@ function summarize(results) {
   ].join('\n');
 }
 
+function summarizeUnprompted(results) {
+  const rows = [...new Set(results.map((r) => r.task))].sort().map((task) => {
+    const runs = results.filter((r) => r.task === task);
+    return `| ${task} | ${runs.filter((r) => r.used_recipes).length}/${runs.length} | ${runs.filter((r) => r.passed).length}/${runs.length} |`;
+  });
+  const consulted = results.filter((r) => r.used_recipes);
+  const skipped = results.filter((r) => !r.used_recipes);
+  const passed = (runs) => `${runs.filter((r) => r.passed).length}/${runs.length}`;
+  return [
+    '| Task | Used the recipes without being told | Passed |',
+    '|---|---|---|',
+    ...rows,
+    `| **Total** | **${consulted.length}/${results.length}** | **${passed(results)}** |`,
+    '',
+    `Passed when the recipes were used: ${passed(consulted)}. Passed when they were not: ${passed(skipped)}.`,
+    `Total cost reported: $${results.reduce((sum, r) => sum + (r.cost_usd ?? 0), 0).toFixed(3)}.`,
+  ].join('\n');
+}
+
 async function main() {
   const values = options;
   if (values['self-check']) selfCheck();
@@ -190,19 +222,19 @@ async function main() {
   const jobs = [];
   for (const task of tasks) {
     for (let run = 0; run < Number(values.runs); run += 1) {
-      for (const mode of ['without', 'with']) {
+      for (const mode of values.unprompted ? ['unprompted'] : ['without', 'with']) {
         jobs.push(() => runAgent({ task, mode, model: values.model, maxBudget: values['max-budget'] }));
       }
     }
   }
 
-  const results = await pool(jobs, Number(values.concurrency));
+  const results = await pool(jobs, Number(values.concurrency), Number(values['max-total']));
   const resultsDir = join(here, 'results');
   mkdirSync(resultsDir, { recursive: true });
   const stamp = new Date().toISOString().slice(0, 10);
-  const name = [stamp, values.model, values.filter.replace(/-$/, '')].filter(Boolean).join('-');
+  const name = [stamp, values.model, values.filter.replace(/-$/, ''), values.unprompted && 'unprompted'].filter(Boolean).join('-');
   writeFileSync(join(resultsDir, `${name}.json`), `${JSON.stringify(results, null, 2)}\n`);
-  const table = summarize(results);
+  const table = values.unprompted ? summarizeUnprompted(results) : summarize(results);
   writeFileSync(join(resultsDir, `${name}.md`), `# Evaluation ${name}\n\n${table}\n`);
   console.log(`\n${table}`);
 }
