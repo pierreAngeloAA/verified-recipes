@@ -1,0 +1,4 @@
+Write a file named solution.rb in the current directory, targeting the latest stable Rails.
+Define class UsersController < ActionController::API with a create action. It reads the strong parameter user[name], and renders the permitted parameters as JSON with status 200.
+Unpermitted keys must be dropped. A malformed request where user is a plain string instead of a nested object is a client error, and it must get an HTTP 400 response.
+Do not require any files. Write only solution.rb.

@@ -1,0 +1,4 @@
+Write a file named solution.rb in the current directory, targeting the latest stable Rails.
+Define an Active Record model class Order (inheriting from ActiveRecord::Base). The orders table already exists and has an integer status column.
+Status is stored as an integer with these values: pending = 0, shipped = 1, delivered = 2. Order objects must have Rails' generated predicate methods, such as order.shipped?.
+Do not require any files. Write only solution.rb.

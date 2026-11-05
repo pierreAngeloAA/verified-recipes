@@ -1,0 +1,4 @@
+Write a file named solution.rb in the current directory, targeting the latest stable Rails.
+Define an Active Record model class Setting (inheriting from ActiveRecord::Base). The settings table already exists and has a text column named prefs.
+The prefs attribute must hold a Ruby hash and be stored in the column as JSON, using Rails' attribute serialization rather than a custom getter and setter.
+Do not require any files. Write only solution.rb.

@@ -1,0 +1,4 @@
+Write a file named solution.rb in the current directory, targeting the latest stable Rails.
+It is part of a standalone Ruby gem named MyGem that depends on Active Support, and it does not run inside a Rails application.
+Define a module MyGem with a module method old_api. It must emit an Active Support deprecation warning with the message "old_api is deprecated" and then return 42.
+Do not require any files. Write only solution.rb.

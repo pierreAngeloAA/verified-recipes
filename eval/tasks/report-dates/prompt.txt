@@ -1,0 +1,5 @@
+Write a file named solution.rb in the current directory, targeting the latest stable Rails.
+Define a module ReportFormatter with two module methods that use Rails' built-in named formats:
+- ReportFormatter.stamp(time) returns Rails' :db format, like "2026-01-02 03:04:05".
+- ReportFormatter.long_date(date) returns Rails' :long format for dates, like "January 02, 2026".
+Do not require any files. Write only solution.rb.
