@@ -33,6 +33,12 @@ const STACKS = {
   langchain: pythonStack('langchain'),
   mcp: pythonStack('mcp'),
   openai: pythonStack('openai'),
+  postgresql: {
+    env: {},
+    // postgres:latest in Docker; falls back to local PostgreSQL binaries when Docker is unavailable.
+    setup: ['bash', ['-c', 'docker pull --quiet postgres:latest 2>/dev/null || ls /usr/lib/postgresql/*/bin/initdb']],
+    command: (file) => ['bash', [file]],
+  },
   python: pythonStack('python'),
   php: {
     env: {},

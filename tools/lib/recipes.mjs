@@ -14,6 +14,7 @@ export const VERIFY_FILES = {
   node: 'verify.mjs',
   openai: 'verify.py',
   php: 'verify.sh',
+  postgresql: 'verify.sh',
   python: 'verify.py',
   rails: 'verify.rb', react: 'verify.mjs', rust: 'verify.sh', spring: 'verify.sh', swift: 'verify.sh',
   terraform: 'verify.sh',
@@ -54,6 +55,7 @@ const ALLOWED_HOSTS = new Set([
   'doc.rust-lang.org',
   'www.php.net',
   'wiki.php.net',
+  'www.postgresql.org',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;
