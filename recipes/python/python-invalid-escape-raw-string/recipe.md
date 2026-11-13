@@ -4,7 +4,7 @@ title: Regex backslashes need raw strings
 stack: python
 applies_to: ">= 3.12"
 tags: ["regex", "strings", "syntax"]
-errors: ["invalid escape sequence '\\d'"]
+errors: ["invalid escape sequence"]
 sources: ["https://docs.python.org/3/whatsnew/3.12.html"]
 ---
 

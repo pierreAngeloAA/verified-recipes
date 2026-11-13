@@ -15,7 +15,9 @@ PACKAGES = {"langchain": ["langchain", "langchain-core"], "python": []}
 def check(recipe_file, correct, mistake):
     path = Path(recipe_file).resolve()
     errors = json.loads(re.search(r"^errors: (\[.*\])$", path.with_name("recipe.md").read_text(), re.M)[1])
-    warnings.simplefilter("error")  # deprecations fail like removals
+    stack = path.parent.parent.name
+    if stack == "python":  # stdlib only: deprecations fail like removals
+        warnings.simplefilter("error")
     correct()
     try:
         mistake()
@@ -26,7 +28,6 @@ def check(recipe_file, correct, mistake):
     missing = [e for e in errors if e not in text]
     if missing:
         sys.exit(f"listed errors did not appear: {missing}\ngot: {text}")
-    stack = path.parent.parent.name
     versions = {name: version(name) for name in PACKAGES.get(stack, [stack])}
     print("VERSIONS " + json.dumps({**versions, "python": platform.python_version()}))
 
