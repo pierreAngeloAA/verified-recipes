@@ -4,6 +4,7 @@ const STACK_NAMES = {
   anthropic: 'Anthropic SDK (Python)',
   langchain: 'LangChain (Python)',
   mcp: 'MCP SDK (Python)',
+  node: 'Node.js',
   openai: 'OpenAI SDK (Python)',
   python: 'Python',
   go: 'Go', rails: 'Ruby on Rails', react: 'React', spring: 'Spring Boot', swift: 'Swift', typescript: 'TypeScript' };

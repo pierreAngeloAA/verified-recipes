@@ -57,6 +57,12 @@ const STACKS = {
     setup: ['npm', ['install', '--no-package-lock', '--no-audit', '--no-fund', '--silent'], join(root, 'recipes/typescript')],
     command: (file) => [process.execPath, [file]],
   },
+  node: {
+    env: {},
+    // Runs each recipe with the Node.js that runs this script (latest LTS in CI).
+    setup: [process.execPath, ['--version']],
+    command: (file) => [process.execPath, [file]],
+  },
   spring: {
     env: {},
     setup: ['docker', ['pull', '--quiet', 'maven:3-eclipse-temurin-21']],

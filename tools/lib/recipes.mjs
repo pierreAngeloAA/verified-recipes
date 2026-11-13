@@ -6,6 +6,7 @@ export const VERIFY_FILES = {
   go: 'verify.sh',
   langchain: 'verify.py',
   mcp: 'verify.py',
+  node: 'verify.mjs',
   openai: 'verify.py',
   python: 'verify.py',
   rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh',
@@ -34,6 +35,7 @@ const ALLOWED_HOSTS = new Set([
   'docs.python.org',
   'www.typescriptlang.org',
   'nodejs.org',
+  'developer.mozilla.org',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;

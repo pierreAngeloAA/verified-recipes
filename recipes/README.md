@@ -24,6 +24,7 @@ The folder name must equal the recipe `id`, and the `id` must start with the sta
 | `go` | `verify.sh`, with `correct/`, `mistake/` and optional `shared/` folders | The latest stable Go, installed in CI |
 | `rails` | `verify.rb` | Ruby, with the latest Rails from `recipes/rails/Gemfile` |
 | `react` | `verify.mjs` | Node.js, with the latest React from `recipes/react/package.json` |
+| `node` | `verify.mjs`, using `recipes/node/support.mjs` | The latest Node.js LTS; no packages |
 | `typescript` | `verify.mjs`, using `recipes/typescript/support.mjs` | Node.js, with the latest `typescript` (tsc) and `@types/node` |
 | `spring` | `verify.sh`, with `correct/` and `mistake/` folders | The official Maven Docker image, with the latest Spring Boot |
 | `swift` | `verify.sh` | The official Swift Docker image |
