@@ -5,6 +5,7 @@ export DOTNET_NOLOGO=1 DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_CLI_UI_LANGUAGE=en L
 verify_csharp_recipe() {
   local dir; dir="$(cd "$1" && pwd)"
   local dotnet; dotnet="$(cd "$dir/../../.." && pwd)/.cache/dotnet/dotnet"
+  trap '"$dotnet" build-server shutdown >/dev/null 2>&1' RETURN  # file-based apps still start a compiler server
   local good bad
   good="$(timeout 300 "$dotnet" run "$dir/Correct.cs" -p:UseSharedCompilation=false 2>&1)" || { echo "$good"; echo "Correct.cs failed"; return 1; }
   if bad="$(timeout 300 "$dotnet" run "$dir/Mistake.cs" -p:UseSharedCompilation=false 2>&1)"; then echo "$bad"; echo "Mistake.cs ran"; return 1; fi
