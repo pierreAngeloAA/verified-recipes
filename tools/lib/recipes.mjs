@@ -14,7 +14,7 @@ export const VERIFY_FILES = {
   node: 'verify.mjs',
   openai: 'verify.py',
   python: 'verify.py',
-  rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh',
+  rails: 'verify.rb', react: 'verify.mjs', rust: 'verify.sh', spring: 'verify.sh', swift: 'verify.sh',
   terraform: 'verify.sh',
   typescript: 'verify.mjs' };
 
@@ -50,6 +50,7 @@ const ALLOWED_HOSTS = new Set([
   'docs.oracle.com',
   'openjdk.org',
   'learn.microsoft.com',
+  'doc.rust-lang.org',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;

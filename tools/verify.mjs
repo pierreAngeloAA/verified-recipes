@@ -93,6 +93,12 @@ const STACKS = {
     setup: [process.execPath, ['--version']],
     command: (file) => [process.execPath, [file]],
   },
+  rust: {
+    env: {},
+    // GitHub runners ship rustup; this moves them to the newest stable release.
+    setup: ['bash', ['-c', 'rustup update stable --no-self-update >/dev/null 2>&1; rustup default stable >/dev/null 2>&1; rustc --version']],
+    command: (file) => ['bash', [file]],
+  },
   spring: {
     env: {},
     setup: ['docker', ['pull', '--quiet', 'maven:3-eclipse-temurin-21']],

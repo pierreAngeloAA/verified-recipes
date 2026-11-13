@@ -31,6 +31,7 @@ The folder name must equal the recipe `id`, and the `id` must start with the sta
 | `node` | `verify.mjs`, using `recipes/node/support.mjs` | The latest Node.js LTS; no packages |
 | `terraform` | `verify.sh`, with `correct/` and `mistake/` folders | `terraform init` + `plan` with the latest Terraform; only the built-in `terraform_data` resource, so no provider or credentials |
 | `typescript` | `verify.mjs`, using `recipes/typescript/support.mjs` | Node.js, with the latest `typescript` (tsc) and `@types/node` |
+| `rust` | `verify.sh`, with `correct.rs` and `mistake.rs` | `rustc --edition 2024` on the newest stable Rust (rustup) |
 | `spring` | `verify.sh`, with `correct/` and `mistake/` folders | The official Maven Docker image, with the latest Spring Boot |
 | `swift` | `verify.sh` | The official Swift Docker image |
 
