@@ -40,6 +40,7 @@ const STACKS = {
     command: (file) => ['bash', [file]],
   },
   python: pythonStack('python'),
+  redis: pythonStack('redis'),
   php: {
     env: {},
     setup: ['docker', ['pull', '--quiet', 'php:cli']],

@@ -16,7 +16,7 @@ export const VERIFY_FILES = {
   php: 'verify.sh',
   postgresql: 'verify.sh',
   python: 'verify.py',
-  rails: 'verify.rb', react: 'verify.mjs', rust: 'verify.sh', spring: 'verify.sh', swift: 'verify.sh',
+  rails: 'verify.rb', react: 'verify.mjs', redis: 'verify.py', rust: 'verify.sh', spring: 'verify.sh', swift: 'verify.sh',
   terraform: 'verify.sh',
   typescript: 'verify.mjs' };
 
@@ -56,6 +56,8 @@ const ALLOWED_HOSTS = new Set([
   'www.php.net',
   'wiki.php.net',
   'www.postgresql.org',
+  'redis.io',
+  'redis.readthedocs.io',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;

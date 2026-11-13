@@ -9,7 +9,7 @@ import warnings
 from importlib.metadata import version
 from pathlib import Path
 
-PACKAGES = {"aws": ["boto3", "botocore"], "langchain": ["langchain", "langchain-core"], "python": []}
+PACKAGES = {"aws": ["boto3", "botocore"], "redis": ["redis"], "langchain": ["langchain", "langchain-core"], "python": []}
 
 
 def check(recipe_file, correct, mistake):
@@ -29,7 +29,33 @@ def check(recipe_file, correct, mistake):
     if missing:
         sys.exit(f"listed errors did not appear: {missing}\ngot: {text}")
     versions = {name: version(name) for name in PACKAGES.get(stack, [stack])}
-    print("VERSIONS " + json.dumps({**versions, "python": platform.python_version()}))
+    print("VERSIONS " + json.dumps({**versions, **SERVER_VERSIONS, "python": platform.python_version()}))
+
+
+SERVER_VERSIONS = {}
+
+
+def redis_client():
+    """Real throwaway Redis: redis:latest in Docker, else a local redis-server on a free port. Stopped at exit."""
+    import atexit, shutil, socket, subprocess, time
+    import redis
+    if shutil.which("docker") and subprocess.run(["docker", "info"], capture_output=True).returncode == 0:
+        cid = subprocess.check_output(["docker", "run", "-d", "--rm", "-p", "127.0.0.1::6379", "redis:latest"], text=True).strip()
+        atexit.register(subprocess.run, ["docker", "rm", "-f", cid], capture_output=True)
+        port = int(subprocess.check_output(["docker", "port", cid, "6379"], text=True).split(":")[-1])
+    else:
+        with socket.socket() as s:
+            s.bind(("127.0.0.1", 0)); port = s.getsockname()[1]
+        proc = subprocess.Popen(["redis-server", "--port", str(port), "--save", "", "--appendonly", "no"], stdout=subprocess.DEVNULL)
+        atexit.register(proc.kill)
+    client = redis.Redis(port=port)
+    for _ in range(100):
+        try:
+            client.ping(); break
+        except redis.ConnectionError:
+            time.sleep(0.1)
+    SERVER_VERSIONS["redis-server"] = client.info()["redis_version"]
+    return client
 
 
 def mock_http(body, content_type="application/json"):
