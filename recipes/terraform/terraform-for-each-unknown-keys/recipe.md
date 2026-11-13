@@ -4,7 +4,7 @@ title: for_each keys must be known at plan time
 stack: terraform
 applies_to: ">= 0.12.6"
 tags: ["for_each", "plan", "unknown-values"]
-errors: ["Invalid for_each argument", "known only after apply"]
+errors: ["Invalid for_each argument", "set includes values derived from resource attributes that"]
 sources: ["https://developer.hashicorp.com/terraform/language/meta-arguments/for_each#limitations-on-values-used-in-for_each"]
 ---
 
