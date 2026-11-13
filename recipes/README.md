@@ -19,6 +19,7 @@ The folder name must equal the recipe `id`, and the `id` must start with the sta
 
 | Stack | Verification file | Runs on |
 |---|---|---|
+| `anthropic`, `openai`, `mcp`, `langchain` | `verify.py`, using `recipes/support.py` | Python, with the newest packages from the stack's `requirements.txt`; HTTP calls are mocked, so no API key is needed |
 | `go` | `verify.sh`, with `correct/`, `mistake/` and optional `shared/` folders | The latest stable Go, installed in CI |
 | `rails` | `verify.rb` | Ruby, with the latest Rails from `recipes/rails/Gemfile` |
 | `react` | `verify.mjs` | Node.js, with the latest React from `recipes/react/package.json` |
