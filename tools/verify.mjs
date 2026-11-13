@@ -63,6 +63,12 @@ const STACKS = {
     setup: ['npm', ['install', '--no-package-lock', '--no-audit', '--no-fund', '--silent'], join(root, 'recipes/typescript')],
     command: (file) => [process.execPath, [file]],
   },
+  kubernetes: {
+    env: {},
+    // Real kube-apiserver + etcd binaries (envtest), installed with Go; no Docker or cluster.
+    setup: ['bash', [join(root, 'recipes/kubernetes/setup.sh')]],
+    command: (file) => ['bash', [file]],
+  },
   node: {
     env: {},
     // Runs each recipe with the Node.js that runs this script (latest LTS in CI).

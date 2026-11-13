@@ -7,6 +7,7 @@ export const VERIFY_FILES = {
   go: 'verify.sh',
   langchain: 'verify.py',
   mcp: 'verify.py',
+  kubernetes: 'verify.sh',
   node: 'verify.mjs',
   openai: 'verify.py',
   python: 'verify.py',
@@ -38,6 +39,7 @@ const ALLOWED_HOSTS = new Set([
   'nodejs.org',
   'developer.mozilla.org',
   'docs.docker.com',
+  'kubernetes.io',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;
