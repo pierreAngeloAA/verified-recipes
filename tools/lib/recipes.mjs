@@ -6,6 +6,7 @@ export const VERIFY_FILES = {
   aws: 'verify.py',
   csharp: 'verify.sh',
   docker: 'verify.sh',
+  'github-actions': 'verify.sh',
   go: 'verify.sh',
   langchain: 'verify.py',
   mcp: 'verify.py',
@@ -58,6 +59,7 @@ const ALLOWED_HOSTS = new Set([
   'www.postgresql.org',
   'redis.io',
   'redis.readthedocs.io',
+  'docs.github.com',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;

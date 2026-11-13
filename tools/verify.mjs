@@ -58,6 +58,12 @@ const STACKS = {
     setup: ['docker', ['buildx', 'version']],
     command: (file) => ['bash', [file]],
   },
+  'github-actions': {
+    env: {},
+    // Latest actionlint, installed with Go.
+    setup: ['bash', [join(root, 'recipes/github-actions/setup.sh')]],
+    command: (file) => ['bash', [file]],
+  },
   go: {
     env: {},
     // Fails early with a clear message when Go is not installed.

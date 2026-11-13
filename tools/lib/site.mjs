@@ -14,6 +14,7 @@ const STACK_NAMES = {
   python: 'Python',
   csharp: 'C#',
   docker: 'Docker',
+  'github-actions': 'GitHub Actions',
   go: 'Go', rails: 'Ruby on Rails', react: 'React', redis: 'Redis (redis-py)', rust: 'Rust', spring: 'Spring Boot', swift: 'Swift', terraform: 'Terraform', typescript: 'TypeScript' };
 
 const STYLE = `:root{--bg:#fff;--fg:#1c1c1c;--muted:#5c5c5c;--line:#d8d8d8;--code:#f4f4f4;--bad:#a12020}
