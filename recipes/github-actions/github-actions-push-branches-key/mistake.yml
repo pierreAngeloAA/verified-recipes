@@ -1,0 +1,7 @@
+on:
+  push:
+    branch: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps: [{run: echo}]

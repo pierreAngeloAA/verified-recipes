@@ -1,0 +1,11 @@
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs: {tag: "v1"}
+    steps: [{run: echo}]
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ needs.build.outputs.tag }}

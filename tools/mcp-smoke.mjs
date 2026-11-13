@@ -31,7 +31,7 @@ assert.equal(recipe.isError, false);
 assert.match(recipe.text, /enum status:/);
 assert.match(recipe.text, /Tested with: rails /);
 
-assert.equal((await call('search_recipes', { query: 'kubernetes ingress' })).text, 'No recipe covers this.');
+assert.equal((await call('search_recipes', { query: 'cobol mainframe jcl' })).text, 'No recipe covers this.');
 assert.equal((await call('get_recipe', { id: 'does-not-exist' })).isError, true);
 
 await client.close();
