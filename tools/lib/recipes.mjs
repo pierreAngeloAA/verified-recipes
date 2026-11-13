@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-export const VERIFY_FILES = { rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh' };
+export const VERIFY_FILES = { go: 'verify.sh', rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh' };
 
 const REQUIRED_STRINGS = ['id', 'title', 'stack', 'applies_to'];
 const REQUIRED_LISTS = ['tags', 'errors', 'sources'];
@@ -17,6 +17,8 @@ const ALLOWED_HOSTS = new Set([
   'docs.swift.org',
   'developer.apple.com',
   'docs.spring.io',
+  'go.dev',
+  'pkg.go.dev',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;
