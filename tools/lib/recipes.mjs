@@ -8,6 +8,7 @@ export const VERIFY_FILES = {
   go: 'verify.sh',
   langchain: 'verify.py',
   mcp: 'verify.py',
+  java: 'verify.sh',
   kubernetes: 'verify.sh',
   node: 'verify.mjs',
   openai: 'verify.py',
@@ -45,6 +46,8 @@ const ALLOWED_HOSTS = new Set([
   'developer.hashicorp.com',
   'boto3.amazonaws.com',
   'docs.aws.amazon.com',
+  'docs.oracle.com',
+  'openjdk.org',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;

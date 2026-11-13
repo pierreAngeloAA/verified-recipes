@@ -5,6 +5,7 @@ const STACK_NAMES = {
   aws: 'AWS (boto3)',
   langchain: 'LangChain (Python)',
   mcp: 'MCP SDK (Python)',
+  java: 'Java',
   kubernetes: 'Kubernetes',
   node: 'Node.js',
   openai: 'OpenAI SDK (Python)',

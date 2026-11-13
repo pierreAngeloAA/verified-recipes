@@ -69,6 +69,12 @@ const STACKS = {
     setup: ['npm', ['install', '--no-package-lock', '--no-audit', '--no-fund', '--silent'], join(root, 'recipes/typescript')],
     command: (file) => [process.execPath, [file]],
   },
+  java: {
+    env: {},
+    // Newest GA Temurin JDK from the Adoptium API, cached in .cache/jdk.
+    setup: ['bash', [join(root, 'recipes/java/setup.sh')]],
+    command: (file) => ['bash', [file]],
+  },
   kubernetes: {
     env: {},
     // Real kube-apiserver + etcd binaries (envtest), installed with Go; no Docker or cluster.

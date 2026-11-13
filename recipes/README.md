@@ -25,6 +25,7 @@ The folder name must equal the recipe `id`, and the `id` must start with the sta
 | `go` | `verify.sh`, with `correct/`, `mistake/` and optional `shared/` folders | The latest stable Go, installed in CI |
 | `rails` | `verify.rb` | Ruby, with the latest Rails from `recipes/rails/Gemfile` |
 | `react` | `verify.mjs` | Node.js, with the latest React from `recipes/react/package.json` |
+| `java` | `verify.sh`, with `Correct.java` and `Mistake.java` | The JDK source launcher (`java File.java`) on the newest GA Temurin JDK, downloaded from Adoptium |
 | `kubernetes` | `verify.sh`, with `correct.yaml` and `mistake.yaml` | `kubectl apply --dry-run=server` against a throwaway kube-apiserver + etcd (latest envtest binaries, installed with Go) |
 | `node` | `verify.mjs`, using `recipes/node/support.mjs` | The latest Node.js LTS; no packages |
 | `terraform` | `verify.sh`, with `correct/` and `mistake/` folders | `terraform init` + `plan` with the latest Terraform; only the built-in `terraform_data` resource, so no provider or credentials |
