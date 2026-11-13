@@ -1,0 +1,2 @@
+ARG VERSION=3
+FROM alpine:${VERSION}

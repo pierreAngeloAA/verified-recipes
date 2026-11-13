@@ -1,0 +1,9 @@
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HAS_TOKEN: ${{ secrets.DEPLOY_TOKEN != '' }}
+    steps:
+      - if: env.HAS_TOKEN == 'true'
+        run: echo deploy
