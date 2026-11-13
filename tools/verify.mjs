@@ -15,6 +15,12 @@ const RAILS_ENV = {
 };
 
 const STACKS = {
+  go: {
+    env: {},
+    // Fails early with a clear message when Go is not installed.
+    setup: ['go', ['version']],
+    command: (file) => ['bash', [file]],
+  },
   rails: {
     env: RAILS_ENV,
     // `update` ignores any existing lockfile, so each run gets the newest release.
