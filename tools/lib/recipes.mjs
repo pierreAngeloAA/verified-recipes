@@ -3,11 +3,20 @@ import { join } from 'node:path';
 
 export const VERIFY_FILES = {
   anthropic: 'verify.py',
+  aws: 'verify.py',
+  csharp: 'verify.sh',
+  docker: 'verify.sh',
   go: 'verify.sh',
   langchain: 'verify.py',
   mcp: 'verify.py',
+  java: 'verify.sh',
+  kubernetes: 'verify.sh',
+  node: 'verify.mjs',
   openai: 'verify.py',
-  rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh' };
+  python: 'verify.py',
+  rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh',
+  terraform: 'verify.sh',
+  typescript: 'verify.mjs' };
 
 const REQUIRED_STRINGS = ['id', 'title', 'stack', 'applies_to'];
 const REQUIRED_LISTS = ['tags', 'errors', 'sources'];
@@ -29,6 +38,18 @@ const ALLOWED_HOSTS = new Set([
   'docs.langchain.com',
   'platform.openai.com',
   'pkg.go.dev',
+  'docs.python.org',
+  'www.typescriptlang.org',
+  'nodejs.org',
+  'developer.mozilla.org',
+  'docs.docker.com',
+  'kubernetes.io',
+  'developer.hashicorp.com',
+  'boto3.amazonaws.com',
+  'docs.aws.amazon.com',
+  'docs.oracle.com',
+  'openjdk.org',
+  'learn.microsoft.com',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;
