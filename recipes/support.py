@@ -5,15 +5,17 @@ import json
 import platform
 import re
 import sys
+import warnings
 from importlib.metadata import version
 from pathlib import Path
 
-PACKAGES = {"langchain": ["langchain", "langchain-core"]}
+PACKAGES = {"langchain": ["langchain", "langchain-core"], "python": []}
 
 
 def check(recipe_file, correct, mistake):
     path = Path(recipe_file).resolve()
     errors = json.loads(re.search(r"^errors: (\[.*\])$", path.with_name("recipe.md").read_text(), re.M)[1])
+    warnings.simplefilter("error")  # deprecations fail like removals
     correct()
     try:
         mistake()
