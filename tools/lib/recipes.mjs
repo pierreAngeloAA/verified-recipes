@@ -8,7 +8,8 @@ export const VERIFY_FILES = {
   mcp: 'verify.py',
   openai: 'verify.py',
   python: 'verify.py',
-  rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh' };
+  rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh',
+  typescript: 'verify.mjs' };
 
 const REQUIRED_STRINGS = ['id', 'title', 'stack', 'applies_to'];
 const REQUIRED_LISTS = ['tags', 'errors', 'sources'];
@@ -31,6 +32,8 @@ const ALLOWED_HOSTS = new Set([
   'platform.openai.com',
   'pkg.go.dev',
   'docs.python.org',
+  'www.typescriptlang.org',
+  'nodejs.org',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;
