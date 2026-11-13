@@ -3,6 +3,7 @@ import { join } from 'node:path';
 
 export const VERIFY_FILES = {
   anthropic: 'verify.py',
+  docker: 'verify.sh',
   go: 'verify.sh',
   langchain: 'verify.py',
   mcp: 'verify.py',
@@ -36,6 +37,7 @@ const ALLOWED_HOSTS = new Set([
   'www.typescriptlang.org',
   'nodejs.org',
   'developer.mozilla.org',
+  'docs.docker.com',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;

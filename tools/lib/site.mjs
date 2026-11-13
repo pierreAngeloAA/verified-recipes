@@ -7,6 +7,7 @@ const STACK_NAMES = {
   node: 'Node.js',
   openai: 'OpenAI SDK (Python)',
   python: 'Python',
+  docker: 'Docker',
   go: 'Go', rails: 'Ruby on Rails', react: 'React', spring: 'Spring Boot', swift: 'Swift', typescript: 'TypeScript' };
 
 const STYLE = `:root{--bg:#fff;--fg:#1c1c1c;--muted:#5c5c5c;--line:#d8d8d8;--code:#f4f4f4;--bad:#a12020}

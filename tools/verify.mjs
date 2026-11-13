@@ -33,6 +33,12 @@ const STACKS = {
   mcp: pythonStack('mcp'),
   openai: pythonStack('openai'),
   python: pythonStack('python'),
+  docker: {
+    env: {},
+    // BuildKit checks need a running Docker engine (preinstalled on GitHub runners).
+    setup: ['docker', ['buildx', 'version']],
+    command: (file) => ['bash', [file]],
+  },
   go: {
     env: {},
     // Fails early with a clear message when Go is not installed.

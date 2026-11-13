@@ -1,0 +1,4 @@
+ARG TAG=3
+FROM alpine:${TAG}
+ARG TAG
+ENV IMAGE_TAG=$TAG
