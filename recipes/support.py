@@ -5,15 +5,19 @@ import json
 import platform
 import re
 import sys
+import warnings
 from importlib.metadata import version
 from pathlib import Path
 
-PACKAGES = {"langchain": ["langchain", "langchain-core"]}
+PACKAGES = {"aws": ["boto3", "botocore"], "langchain": ["langchain", "langchain-core"], "python": []}
 
 
 def check(recipe_file, correct, mistake):
     path = Path(recipe_file).resolve()
     errors = json.loads(re.search(r"^errors: (\[.*\])$", path.with_name("recipe.md").read_text(), re.M)[1])
+    stack = path.parent.parent.name
+    if stack == "python":  # stdlib only: deprecations fail like removals
+        warnings.simplefilter("error")
     correct()
     try:
         mistake()
@@ -24,7 +28,6 @@ def check(recipe_file, correct, mistake):
     missing = [e for e in errors if e not in text]
     if missing:
         sys.exit(f"listed errors did not appear: {missing}\ngot: {text}")
-    stack = path.parent.parent.name
     versions = {name: version(name) for name in PACKAGES.get(stack, [stack])}
     print("VERSIONS " + json.dumps({**versions, "python": platform.python_version()}))
 
@@ -63,3 +66,10 @@ def openai_client(body=None, content_type="application/json"):
     import openai
     body = chat_completion({"content": "Paris"}) if body is None else body
     return openai.OpenAI(api_key="test", http_client=mock_http(body, content_type), max_retries=0)
+
+
+def aws_client(service, resource=False):
+    """Offline boto3 client: fake credentials, fixed region; pair with botocore.stub.Stubber for responses."""
+    import boto3
+    make = boto3.resource if resource else boto3.client
+    return make(service, region_name="us-east-1", aws_access_key_id="test", aws_secret_access_key="test")
