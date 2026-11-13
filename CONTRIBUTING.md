@@ -11,7 +11,7 @@ A recipe must cover one specific trap, and the mistake must fail or misbehave wh
 
 ## Add a recipe
 
-You need Node.js 20 or later, plus the tool for your stack: Go for Go and Kubernetes, Python 3 for Python and the AI SDK stacks (anthropic, openai, mcp, langchain), Ruby for Rails, or Docker for Docker, Spring Boot and Swift. Node.js, React and TypeScript need only Node.js.
+You need Node.js 20 or later, plus the tool for your stack: Go for Go and Kubernetes, Terraform for Terraform, Python 3 for Python and the AI SDK stacks (anthropic, openai, mcp, langchain), Ruby for Rails, or Docker for Docker, Spring Boot and Swift. Node.js, React and TypeScript need only Node.js.
 
 1. Copy `recipes/TEMPLATE.md` to `recipes/<stack>/<id>/recipe.md`. The [recipe guide](recipes/README.md) describes each field.
 2. Add the verification script. It must prove that the correct code works **and** that the mistake still fails with a listed error.

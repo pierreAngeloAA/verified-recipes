@@ -12,6 +12,7 @@ export const VERIFY_FILES = {
   openai: 'verify.py',
   python: 'verify.py',
   rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh',
+  terraform: 'verify.sh',
   typescript: 'verify.mjs' };
 
 const REQUIRED_STRINGS = ['id', 'title', 'stack', 'applies_to'];
@@ -40,6 +41,7 @@ const ALLOWED_HOSTS = new Set([
   'developer.mozilla.org',
   'docs.docker.com',
   'kubernetes.io',
+  'developer.hashicorp.com',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;

@@ -57,6 +57,11 @@ const STACKS = {
     setup: ['npm', ['install', '--no-package-lock', '--no-audit', '--no-fund', '--silent'], join(root, 'recipes/react')],
     command: (file) => [process.execPath, [file]],
   },
+  terraform: {
+    env: {},
+    setup: ['terraform', ['version']],
+    command: (file) => ['bash', [file]],
+  },
   typescript: {
     env: {},
     // No lockfile, so each run gets the newest release.
