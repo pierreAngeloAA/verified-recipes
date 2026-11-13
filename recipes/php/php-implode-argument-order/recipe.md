@@ -4,7 +4,7 @@ title: implode() takes the separator first
 stack: php
 applies_to: ">= 8.0"
 tags: ["strings", "arrays", "migration"]
-errors: ["implode(): Argument #2 ($array) must be of type ?array, string given"]
+errors: ["implode(): Argument #1 ($separator) must be of type string, array given"]
 sources: ["https://www.php.net/manual/en/function.implode.php"]
 ---
 
