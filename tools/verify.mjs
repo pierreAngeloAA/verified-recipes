@@ -34,6 +34,12 @@ const STACKS = {
   mcp: pythonStack('mcp'),
   openai: pythonStack('openai'),
   python: pythonStack('python'),
+  csharp: {
+    env: {},
+    // Newest supported .NET SDK, installed into .cache/dotnet with Microsoft's dotnet-install script.
+    setup: ['bash', [join(root, 'recipes/csharp/setup.sh')]],
+    command: (file) => ['bash', [file]],
+  },
   docker: {
     env: {},
     // BuildKit checks need a running Docker engine (preinstalled on GitHub runners).

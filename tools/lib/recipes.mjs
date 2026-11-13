@@ -4,6 +4,7 @@ import { join } from 'node:path';
 export const VERIFY_FILES = {
   anthropic: 'verify.py',
   aws: 'verify.py',
+  csharp: 'verify.sh',
   docker: 'verify.sh',
   go: 'verify.sh',
   langchain: 'verify.py',
@@ -48,6 +49,7 @@ const ALLOWED_HOSTS = new Set([
   'docs.aws.amazon.com',
   'docs.oracle.com',
   'openjdk.org',
+  'learn.microsoft.com',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;

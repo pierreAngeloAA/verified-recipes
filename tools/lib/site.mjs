@@ -10,6 +10,7 @@ const STACK_NAMES = {
   node: 'Node.js',
   openai: 'OpenAI SDK (Python)',
   python: 'Python',
+  csharp: 'C#',
   docker: 'Docker',
   go: 'Go', rails: 'Ruby on Rails', react: 'React', spring: 'Spring Boot', swift: 'Swift', terraform: 'Terraform', typescript: 'TypeScript' };
 

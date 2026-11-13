@@ -21,6 +21,7 @@ The folder name must equal the recipe `id`, and the `id` must start with the sta
 |---|---|---|
 | `anthropic`, `openai`, `mcp`, `langchain`, `aws` | `verify.py`, using `recipes/support.py` | Python, with the newest packages from the stack's `requirements.txt`; HTTP calls are mocked (botocore Stubber for AWS), so no API key or credentials are needed |
 | `python` | `verify.py`, using `recipes/support.py` | The newest stable Python, installed in CI; standard library only |
+| `csharp` | `verify.sh`, with `Correct.cs` and `Mistake.cs` | .NET file-based apps (`dotnet run file.cs`) on the newest supported .NET SDK, installed with dotnet-install |
 | `docker` | `verify.sh`, with `correct/` and `mistake/` Dockerfiles | `docker build --check` (BuildKit lint rules) on the runner's Docker engine |
 | `go` | `verify.sh`, with `correct/`, `mistake/` and optional `shared/` folders | The latest stable Go, installed in CI |
 | `rails` | `verify.rb` | Ruby, with the latest Rails from `recipes/rails/Gemfile` |
