@@ -4,27 +4,27 @@ title: An ARG before FROM is not visible inside the stage
 stack: docker
 applies_to: ">= 27.0"
 tags: ["dockerfile", "args", "multi-stage"]
-errors: ["Usage of undefined variable '$NODE_VERSION'"]
+errors: ["Usage of undefined variable '$ALPINE_VERSION'"]
 sources: ["https://docs.docker.com/reference/build-checks/undefined-var/"]
 ---
 
 ## Mistake
 
 ```dockerfile
-ARG NODE_VERSION=26
-FROM node:${NODE_VERSION}-alpine
-ENV V=$NODE_VERSION  # empty
+ARG ALPINE_VERSION=3.22
+FROM alpine:${ALPINE_VERSION}
+ENV BASE=$ALPINE_VERSION  # empty
 ```
 
 ## Correct
 
 ```dockerfile
-ARG NODE_VERSION=26
-FROM node:${NODE_VERSION}-alpine
-ARG NODE_VERSION  # re-declare to use it in the stage
-ENV V=$NODE_VERSION
+ARG ALPINE_VERSION=3.22
+FROM alpine:${ALPINE_VERSION}
+ARG ALPINE_VERSION  # re-declare to use it in the stage
+ENV BASE=$ALPINE_VERSION
 ```
 
 ## Why
 
-Global ARGs only feed FROM lines. Each stage must re-declare the ARG (no value needed) to read it.
+Global ARGs only feed FROM lines. Each stage must re-declare the ARG (no value needed) to read it. If the base image has an ENV of the same name (node sets NODE_VERSION), you silently get the image's value.
