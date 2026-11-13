@@ -7,6 +7,7 @@ export const VERIFY_FILES = {
   langchain: 'verify.py',
   mcp: 'verify.py',
   openai: 'verify.py',
+  python: 'verify.py',
   rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh' };
 
 const REQUIRED_STRINGS = ['id', 'title', 'stack', 'applies_to'];
@@ -29,6 +30,7 @@ const ALLOWED_HOSTS = new Set([
   'docs.langchain.com',
   'platform.openai.com',
   'pkg.go.dev',
+  'docs.python.org',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;
