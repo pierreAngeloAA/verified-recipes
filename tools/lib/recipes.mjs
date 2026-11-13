@@ -3,11 +3,15 @@ import { join } from 'node:path';
 
 export const VERIFY_FILES = {
   anthropic: 'verify.py',
+  docker: 'verify.sh',
   go: 'verify.sh',
   langchain: 'verify.py',
   mcp: 'verify.py',
+  node: 'verify.mjs',
   openai: 'verify.py',
-  rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh' };
+  python: 'verify.py',
+  rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh',
+  typescript: 'verify.mjs' };
 
 const REQUIRED_STRINGS = ['id', 'title', 'stack', 'applies_to'];
 const REQUIRED_LISTS = ['tags', 'errors', 'sources'];
@@ -29,6 +33,11 @@ const ALLOWED_HOSTS = new Set([
   'docs.langchain.com',
   'platform.openai.com',
   'pkg.go.dev',
+  'docs.python.org',
+  'www.typescriptlang.org',
+  'nodejs.org',
+  'developer.mozilla.org',
+  'docs.docker.com',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;
