@@ -13,7 +13,8 @@ sources: ["https://docs.docker.com/reference/build-checks/undefined-var/"]
 ```dockerfile
 ARG ALPINE_VERSION=3.22
 FROM alpine:${ALPINE_VERSION}
-ENV BASE=$ALPINE_VERSION  # empty
+# empty here:
+ENV BASE=$ALPINE_VERSION
 ```
 
 ## Correct
@@ -21,7 +22,8 @@ ENV BASE=$ALPINE_VERSION  # empty
 ```dockerfile
 ARG ALPINE_VERSION=3.22
 FROM alpine:${ALPINE_VERSION}
-ARG ALPINE_VERSION  # re-declare to use it in the stage
+# re-declare to use it in the stage:
+ARG ALPINE_VERSION
 ENV BASE=$ALPINE_VERSION
 ```
 
