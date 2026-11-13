@@ -1,0 +1,2 @@
+CREATE TABLE users (id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY, name text);
+INSERT INTO users (name) VALUES ('a');
