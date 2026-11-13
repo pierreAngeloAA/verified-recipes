@@ -19,7 +19,7 @@ The folder name must equal the recipe `id`, and the `id` must start with the sta
 
 | Stack | Verification file | Runs on |
 |---|---|---|
-| `anthropic`, `openai`, `mcp`, `langchain` | `verify.py`, using `recipes/support.py` | Python, with the newest packages from the stack's `requirements.txt`; HTTP calls are mocked, so no API key is needed |
+| `anthropic`, `openai`, `mcp`, `langchain`, `aws` | `verify.py`, using `recipes/support.py` | Python, with the newest packages from the stack's `requirements.txt`; HTTP calls are mocked (botocore Stubber for AWS), so no API key or credentials are needed |
 | `python` | `verify.py`, using `recipes/support.py` | The newest stable Python, installed in CI; standard library only |
 | `docker` | `verify.sh`, with `correct/` and `mistake/` Dockerfiles | `docker build --check` (BuildKit lint rules) on the runner's Docker engine |
 | `go` | `verify.sh`, with `correct/`, `mistake/` and optional `shared/` folders | The latest stable Go, installed in CI |

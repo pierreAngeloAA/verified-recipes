@@ -9,7 +9,7 @@ import warnings
 from importlib.metadata import version
 from pathlib import Path
 
-PACKAGES = {"langchain": ["langchain", "langchain-core"], "python": []}
+PACKAGES = {"aws": ["boto3", "botocore"], "langchain": ["langchain", "langchain-core"], "python": []}
 
 
 def check(recipe_file, correct, mistake):
@@ -66,3 +66,10 @@ def openai_client(body=None, content_type="application/json"):
     import openai
     body = chat_completion({"content": "Paris"}) if body is None else body
     return openai.OpenAI(api_key="test", http_client=mock_http(body, content_type), max_retries=0)
+
+
+def aws_client(service, resource=False):
+    """Offline boto3 client: fake credentials, fixed region; pair with botocore.stub.Stubber for responses."""
+    import boto3
+    make = boto3.resource if resource else boto3.client
+    return make(service, region_name="us-east-1", aws_access_key_id="test", aws_secret_access_key="test")

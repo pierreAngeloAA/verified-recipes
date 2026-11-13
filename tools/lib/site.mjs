@@ -2,6 +2,7 @@ import { verificationState } from '../../mcp/search.mjs';
 
 const STACK_NAMES = {
   anthropic: 'Anthropic SDK (Python)',
+  aws: 'AWS (boto3)',
   langchain: 'LangChain (Python)',
   mcp: 'MCP SDK (Python)',
   kubernetes: 'Kubernetes',

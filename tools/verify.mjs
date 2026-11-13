@@ -29,6 +29,7 @@ const pythonStack = (stack) => ({
 
 const STACKS = {
   anthropic: pythonStack('anthropic'),
+  aws: pythonStack('aws'),
   langchain: pythonStack('langchain'),
   mcp: pythonStack('mcp'),
   openai: pythonStack('openai'),
