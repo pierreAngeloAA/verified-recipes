@@ -21,7 +21,7 @@ const pythonStack = (stack) => ({
   env: { PYTHONPATH: join(root, 'recipes'), PYTHONDONTWRITEBYTECODE: '1' },
   setup: [
     'bash',
-    ['-c', `{ [ -x "$1" ] || python3 -m venv "$2"; } && "$1" -m pip install -q -U -r "$3"`, '_', PYTHON, VENV,
+    ['-c', `{ [ -x "$1" ] || python3 -m venv "$2"; } && { [ ! -f "$3" ] || "$1" -m pip install -q -U -r "$3"; }`, '_', PYTHON, VENV,
       join(root, `recipes/${stack}/requirements.txt`)],
   ],
   command: (file) => [PYTHON, [file]],
@@ -32,6 +32,13 @@ const STACKS = {
   langchain: pythonStack('langchain'),
   mcp: pythonStack('mcp'),
   openai: pythonStack('openai'),
+  python: pythonStack('python'),
+  docker: {
+    env: {},
+    // BuildKit checks need a running Docker engine (preinstalled on GitHub runners).
+    setup: ['docker', ['buildx', 'version']],
+    command: (file) => ['bash', [file]],
+  },
   go: {
     env: {},
     // Fails early with a clear message when Go is not installed.
@@ -48,6 +55,29 @@ const STACKS = {
     env: {},
     // No lockfile, so each run gets the newest release.
     setup: ['npm', ['install', '--no-package-lock', '--no-audit', '--no-fund', '--silent'], join(root, 'recipes/react')],
+    command: (file) => [process.execPath, [file]],
+  },
+  terraform: {
+    env: {},
+    setup: ['terraform', ['version']],
+    command: (file) => ['bash', [file]],
+  },
+  typescript: {
+    env: {},
+    // No lockfile, so each run gets the newest release.
+    setup: ['npm', ['install', '--no-package-lock', '--no-audit', '--no-fund', '--silent'], join(root, 'recipes/typescript')],
+    command: (file) => [process.execPath, [file]],
+  },
+  kubernetes: {
+    env: {},
+    // Real kube-apiserver + etcd binaries (envtest), installed with Go; no Docker or cluster.
+    setup: ['bash', [join(root, 'recipes/kubernetes/setup.sh')]],
+    command: (file) => ['bash', [file]],
+  },
+  node: {
+    env: {},
+    // Runs each recipe with the Node.js that runs this script (latest LTS in CI).
+    setup: [process.execPath, ['--version']],
     command: (file) => [process.execPath, [file]],
   },
   spring: {

@@ -4,8 +4,12 @@ const STACK_NAMES = {
   anthropic: 'Anthropic SDK (Python)',
   langchain: 'LangChain (Python)',
   mcp: 'MCP SDK (Python)',
+  kubernetes: 'Kubernetes',
+  node: 'Node.js',
   openai: 'OpenAI SDK (Python)',
-  go: 'Go', rails: 'Ruby on Rails', react: 'React', spring: 'Spring Boot', swift: 'Swift' };
+  python: 'Python',
+  docker: 'Docker',
+  go: 'Go', rails: 'Ruby on Rails', react: 'React', spring: 'Spring Boot', swift: 'Swift', terraform: 'Terraform', typescript: 'TypeScript' };
 
 const STYLE = `:root{--bg:#fff;--fg:#1c1c1c;--muted:#5c5c5c;--line:#d8d8d8;--code:#f4f4f4;--bad:#a12020}
 @media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#ececec;--muted:#a8a8a8;--line:#3a3a3a;--code:#242424;--bad:#ff9a9a}}
