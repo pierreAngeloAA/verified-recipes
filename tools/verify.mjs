@@ -34,6 +34,11 @@ const STACKS = {
   mcp: pythonStack('mcp'),
   openai: pythonStack('openai'),
   python: pythonStack('python'),
+  php: {
+    env: {},
+    setup: ['docker', ['pull', '--quiet', 'php:cli']],
+    command: (file) => ['bash', [file]],
+  },
   csharp: {
     env: {},
     // Newest supported .NET SDK, installed into .cache/dotnet with Microsoft's dotnet-install script.

@@ -13,6 +13,7 @@ export const VERIFY_FILES = {
   kubernetes: 'verify.sh',
   node: 'verify.mjs',
   openai: 'verify.py',
+  php: 'verify.sh',
   python: 'verify.py',
   rails: 'verify.rb', react: 'verify.mjs', rust: 'verify.sh', spring: 'verify.sh', swift: 'verify.sh',
   terraform: 'verify.sh',
@@ -51,6 +52,8 @@ const ALLOWED_HOSTS = new Set([
   'openjdk.org',
   'learn.microsoft.com',
   'doc.rust-lang.org',
+  'www.php.net',
+  'wiki.php.net',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;

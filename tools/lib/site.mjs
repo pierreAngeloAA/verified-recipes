@@ -9,6 +9,7 @@ const STACK_NAMES = {
   kubernetes: 'Kubernetes',
   node: 'Node.js',
   openai: 'OpenAI SDK (Python)',
+  php: 'PHP',
   python: 'Python',
   csharp: 'C#',
   docker: 'Docker',
