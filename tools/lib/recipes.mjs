@@ -17,7 +17,7 @@ export const VERIFY_FILES = {
   php: 'verify.sh',
   postgresql: 'verify.sh',
   python: 'verify.py',
-  rails: 'verify.rb', react: 'verify.mjs', redis: 'verify.py', rust: 'verify.sh', spring: 'verify.sh', swift: 'verify.sh',
+  rails: 'verify.rb', ruby: 'verify.sh', react: 'verify.mjs', redis: 'verify.py', rust: 'verify.sh', spring: 'verify.sh', swift: 'verify.sh',
   terraform: 'verify.sh',
   typescript: 'verify.mjs' };
 
@@ -60,6 +60,8 @@ const ALLOWED_HOSTS = new Set([
   'redis.io',
   'redis.readthedocs.io',
   'docs.github.com',
+  'docs.ruby-lang.org',
+  'www.ruby-lang.org',
 ]);
 
 const INVISIBLE = /[​-‏‪-‮⁠-⁤﻿]|[\u{E0000}-\u{E007F}]/u;

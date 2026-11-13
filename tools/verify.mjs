@@ -70,6 +70,11 @@ const STACKS = {
     setup: ['go', ['version']],
     command: (file) => ['bash', [file]],
   },
+  ruby: {
+    env: {},
+    setup: ['ruby', ['--version']],
+    command: (file) => ['bash', [file]],
+  },
   rails: {
     env: RAILS_ENV,
     // `update` ignores any existing lockfile, so each run gets the newest release.
