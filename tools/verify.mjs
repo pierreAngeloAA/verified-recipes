@@ -14,7 +14,24 @@ const RAILS_ENV = {
   BUNDLE_PATH: join(cache, 'bundle'),
 };
 
+// Python stacks share one virtual environment; each installs its newest packages.
+const VENV = join(cache, 'venv');
+const PYTHON = join(VENV, 'bin/python');
+const pythonStack = (stack) => ({
+  env: { PYTHONPATH: join(root, 'recipes'), PYTHONDONTWRITEBYTECODE: '1' },
+  setup: [
+    'bash',
+    ['-c', `{ [ -x "$1" ] || python3 -m venv "$2"; } && "$1" -m pip install -q -U -r "$3"`, '_', PYTHON, VENV,
+      join(root, `recipes/${stack}/requirements.txt`)],
+  ],
+  command: (file) => [PYTHON, [file]],
+});
+
 const STACKS = {
+  anthropic: pythonStack('anthropic'),
+  langchain: pythonStack('langchain'),
+  mcp: pythonStack('mcp'),
+  openai: pythonStack('openai'),
   go: {
     env: {},
     // Fails early with a clear message when Go is not installed.

@@ -1,7 +1,13 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-export const VERIFY_FILES = { go: 'verify.sh', rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh' };
+export const VERIFY_FILES = {
+  anthropic: 'verify.py',
+  go: 'verify.sh',
+  langchain: 'verify.py',
+  mcp: 'verify.py',
+  openai: 'verify.py',
+  rails: 'verify.rb', react: 'verify.mjs', spring: 'verify.sh', swift: 'verify.sh' };
 
 const REQUIRED_STRINGS = ['id', 'title', 'stack', 'applies_to'];
 const REQUIRED_LISTS = ['tags', 'errors', 'sources'];
@@ -18,6 +24,10 @@ const ALLOWED_HOSTS = new Set([
   'developer.apple.com',
   'docs.spring.io',
   'go.dev',
+  'platform.claude.com',
+  'py.sdk.modelcontextprotocol.io',
+  'docs.langchain.com',
+  'platform.openai.com',
   'pkg.go.dev',
 ]);
 

@@ -1,0 +1,5 @@
+# Unpinned, so verification always runs against the newest release.
+langchain
+langchain-openai
+langchain-text-splitters
+langgraph
