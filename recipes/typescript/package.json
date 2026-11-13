@@ -1,0 +1,10 @@
+{
+  "name": "verified-recipes-typescript-verification",
+  "private": true,
+  "type": "module",
+  "description": "Unpinned with no lockfile, so verification runs against the newest release.",
+  "dependencies": {
+    "@types/node": "latest",
+    "typescript": "latest"
+  }
+}

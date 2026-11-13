@@ -1,0 +1,7 @@
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - if: github.ref == 'refs/heads/main' && success()
+        run: echo hi

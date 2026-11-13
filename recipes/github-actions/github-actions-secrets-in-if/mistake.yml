@@ -1,0 +1,7 @@
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ secrets.DEPLOY_TOKEN != '' }}
+        run: echo deploy
